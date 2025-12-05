@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>IQ Arena — Результат</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  background: #0a0f1e;
+  font-family: Arial, sans-serif;
+  color: #e6ecff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.result-box {
+  background: #1a2236;
+  width: 90%;
+  max-width: 480px;
+  padding: 30px;
+  border-radius: 14px;
+  border: 2.6px solid #00a2ff;
+  box-shadow: 0 0 20px rgba(0,162,255,0.6), 0 0 12px rgba(0,255,255,0.25) inset;
+  animation: popUp 0.45s ease;
+  text-align: center;
+}
+
+@keyframes popUp {
+  0% { opacity:0; transform: scale(0.86) translateY(10px); }
+  100% { opacity:1; transform: scale(1) translateY(0); }
+}
+
+h1 {
+  font-size: 30px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  text-shadow: 0 0 14px #00e6ff, 0 0 5px #0077ff;
+}
+
+.score {
+  font-size: 20px;
+  margin: 12px 0;
+}
+
+.percent {
+  font-size: 24px;
+  font-weight: 900;
+  color: #00f2ff;
+  margin-bottom: 8px;
+  text-shadow: 0 0 14px #00ffff;
+}
+
+.iq-result {
+  background: #232e4a;
+  padding: 16px;
+  border-radius: 14px;
+  border: 2px solid #00a2ff;
+  font-size: 22px;
+  font-weight: 800;
+  margin: 18px 0 24px 0;
+  text-shadow: 0 0 8px #3b82f6;
+  box-shadow: 0 0 12px rgba(0,200,255,0.15) inset;
+}
+
+.back-btn {
+  display: inline-block;
+  width: 80%;
+  max-width: 220px;
+  background: linear-gradient(90deg, #2563eb, #0ea5e9);
+  color: white;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+  box-shadow: 0 0 14px #00c8ff;
+  transition: 0.15s;
+}
+
+.back-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 22px #00ffff;
+}
+
+/* 💡 адаптация под совсем маленькие экраны */
+@media (max-width:450px) {
+  h1 { font-size: 26px; }
+  .iq-result { font-size: 19px; }
+  .percent { font-size: 21px; }
+}
+</style>
+</head>
+
+<body>
+  <div class="result-box">
+      <h1>🏆 Результат Квеста IQ</h1>
+
+      <!-- Вывод percent (если ты передаёшь, если нет — можно вычислить в JS, но у тебя вроде есть) -->
+      <div class="percent">⚡ {{ percent }}%</div>
+
+      <div class="score">✅ Правильных: {{ score }} / {{ total }}</div>
+
+      <div class="iq-result">
+        {% if percent <= 30 %}
+          <div class="iq-result">Примерный IQ: 70<br>🕹 Уровень: Новичок</div>
+        {% elif percent <= 50 %}
+          <div class="iq-result">Примерный IQ: 85<br>🎮 Уровень: Игрок</div>
+        {% elif percent <= 65 %}
+          <div class="iq-result">Примерный IQ: 100<br>🚀 Уровень: Стратег</div>
+        {% elif percent <= 80 %}
+          <div class="iq-result">Примерный IQ: 115<br>🔥 Уровень: Мастер логики</div>
+        {% elif percent <= 90 %}
+          <div class="iq-result">Примерный IQ: 130<br>💎 Уровень: Гений</div>
+        {% else %}
+          <div class="iq-result">Примерный IQ: 145<br>🌟 Уровень: Легенда</div>
+        {% endif %}
+      </div>
+
+      <a class="back-btn" href="{{ url_for('index') }}">🏠 В главное меню</a>
+
+      <p style="margin-top: 20px; font-size: 15px; opacity: 0.6;">
+        *Это игровой расчёт, а не официальный диагноз
+      </p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>О нас</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #090e1a;
+      color: #e6ebff;
+      margin: 0;
+      padding: 0;
+      padding-top: 90px;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 700px;
+      margin: auto;
+      background-color: #1f2937;
+      padding: 25px 20px;
+      border-radius: 15px;
+      border: 2px solid rgba(0,162,255,0.4);
+      box-shadow: 0 0 25px rgba(0,81,255,0.6);
+      animation: fadeIn 0.4s ease;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 24px;
+      color: #ffffff;
+      text-shadow: 0 0 8px rgba(0,162,255,0.6);
+    }
+
+    .info-box {
+      background: #374151;
+      padding: 20px;
+      border-radius: 12px;
+      border: 2px solid rgba(0,162,255,0.35);
+      margin-top: 15px;
+      font-size: 18px;
+      line-height: 1.6;
+      font-weight: 600;
+    }
+
+    .contact-links a {
+      width: 100%;
+      display: block;
+      text-align: center;
+      background: rgba(59,130,246,0.15);
+      padding: 14px;
+      margin: 10px 0;
+      border-radius: 10px;
+      color: #cce7ff;
+      font-size: 18px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: 0.15s;
+      box-shadow: 0 0 8px rgba(0,162,255,0.4);
+    }
+
+    .contact-links a:hover {
+      background: rgba(0,162,255,0.35);
+      color: white;
+      transform: scale(1.03);
+    }
+
+    .navbar-dark {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: linear-gradient(180deg, rgba(17,24,39,0.95), rgba(17,24,39,0.85));
+      box-shadow: 0 0 12px rgba(0,162,255,0.5), 0 0 4px rgba(0,162,255,0.3) inset;
+      border-bottom: 2px solid rgba(0,162,255,0.4);
+      backdrop-filter: blur(6px);
+      overflow: hidden;
+    }
+
+    .navbar-dark .brand {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 18px;
+      font-weight: 700;
+      color: #e6eefc;
+      white-space: nowrap;
+    }
+
+    .navbar-dark .brand .logo {
+      width: 34px;
+      height: 34px;
+      font-size: 14px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #7dd3fc, #7c3aed);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+    }
+
+    .navbar-dark .title {
+      font-size: 20px;
+      font-weight: 800;
+      background: linear-gradient(90deg, #4adeff, #6366f1, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 12px rgba(0,200,255,0.7);
+      letter-spacing: 1px;
+      animation: glowText 1.5s infinite alternate;
+    }
+
+    @keyframes glowText {
+      from { text-shadow: 0 0 6px rgba(0,162,255,0.5); }
+      to   { text-shadow: 0 0 14px rgba(0,255,255,1); }
+    }
+
+    .navbar-dark .nav-links { display: none; }
+
+    .navbar-dark .burger {
+      display: block;
+      cursor: pointer;
+      font-size: 28px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      color: #4adeff;
+      text-shadow: 0 0 10px rgba(0,200,255,0.9);
+      margin-right: 10px;
+      user-select: none;
+      transition: 0.2s;
+    }
+
+    .navbar-dark .burger:hover {
+      transform: rotate(10deg) scale(1.2);
+      text-shadow: 0 0 20px rgba(0,255,255,1);
+    }
+
+    .mobile-panel {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 70%;
+      max-width: 300px;
+      height: 100%;
+      background: #0f172a;
+      box-shadow: -8px 0 20px rgba(0,162,255,0.5);
+      padding: 90px 20px 20px 20px;
+      transition: right 0.28s cubic-bezier(.2,.9,.3,1);
+      z-index: 2500;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .mobile-panel.open { right: 0; }
+
+    .mobile-panel a {
+      font-size: 18px;
+      padding: 16px;
+      border-radius: 10px;
+      background: rgba(0,162,255,0.1);
+      border: 1px solid rgba(0,162,255,0.3);
+      text-align: center;
+      color: #cce7ff;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .mobile-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.28s;
+      z-index: 2400;
+    }
+
+    .mobile-overlay.open { opacity: 1; pointer-events: auto; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 22px; }
+    }
+    #mobilePanel a:hover {
+    transform: scale(1.1) !important;
+    filter: brightness(1.3) !important;
+    box-shadow: 0 0 25px rgba(0,200,255,1) !important;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="navbar-dark">
+    <div class="brand">
+      <div class="logo">IQ</div>
+      <div class="title">IQ Arena</div>
+    </div>
+    <div class="burger" onclick="toggleMenu()">☰</div>
+  </div>
+
+  <div id="menuPanel" class="mobile-panel">
+    <a href="/">🏠 Главная</a>
+    <a href="/info_iq">🧠 Об IQ</a>
+    <a href="/about">🎮 О нас</a>
+  </div>
+
+  <div id="menuOverlay" class="mobile-overlay"></div>
+
+  <div class="container">
+    <h1>О нас</h1>
+    <div class="info-box">
+      🎯 **IQ Arena** — Это мой первый реализованный проект.Он представляет собой игровой сайт для проверки интеллекта и логики.
+      <br><br>
+      🚀 Проходи тесты, тренируй мозг, соревнуйся с друзьями!
+      <br><br>
+      💡 Сайт находится в стадии активной разработки.
+    </div>
+
+    <h1>Связь для рекламы</h1>
+    <div class="contact-links">
+      <a href="mailto:abdera1509@gmail.com">📩 Gmail для связи</a>
+    </div>
+  </div>
+
+  <script>
+    const panel = document.getElementById("menuPanel");
+    const overlay = document.getElementById("menuOverlay");
+
+    function toggleMenu() {
+      const isOpen = panel.classList.toggle("open");
+      overlay.classList.toggle("open", isOpen);
+    }
+
+    overlay.onclick = () => toggleMenu();
+  </script>
+
+</body>
+</html>

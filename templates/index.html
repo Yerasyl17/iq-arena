@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>IQ Arena</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/style.css') }}">
+
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #090e1a;
+      color: #e6ebff;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    /* NAVBAR */
+    .navbar-dark {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 20px;
+      background: linear-gradient(180deg, rgba(17,24,39,0.95), rgba(17,24,39,0.85));
+      box-shadow: 0 0 12px rgba(0,162,255,0.5), 0 0 4px rgba(0,162,255,0.3) inset;
+      border-bottom: 2px solid rgba(0,162,255,0.4);
+      backdrop-filter: blur(6px);
+    }
+
+    .navbar-dark .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 22px;
+      text-shadow: 0 0 8px rgba(0,162,255,0.6);
+    }
+
+    .navbar-dark .brand .logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #0ea5e9, #1e3afb);
+      box-shadow: 0 0 15px rgba(0,162,255,0.8);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 18px;
+      animation: pulseLogo 2s infinite alternate;
+    }
+
+    @keyframes pulseLogo {
+      0% { box-shadow: 0 0 8px #0ea5e9; }
+      100% { box-shadow: 0 0 22px #2563eb; }
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 14px;
+    }
+
+    .nav-links a {
+      padding: 10px 18px;
+      border-radius: 10px;
+      background: linear-gradient(90deg,#0ea5e9,#2563eb);
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 0 12px rgba(0,200,255,0.7);
+      transition: 0.15s;
+    }
+
+    .nav-links a:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 20px rgba(0,255,255,1);
+    }
+
+    .burger {
+      display: none;
+      font-size: 32px;
+      cursor: pointer;
+      color: #0ea5e9;
+      text-shadow: 0 0 10px rgba(0,162,255,0.8);
+    }
+
+    /* MOBILE MENU */
+    .mobile-panel {
+      position: fixed;
+      top: 0;
+      right: -320px;
+      width: 260px;
+      height: 100%;
+      background: #0f172a;
+      box-shadow: -8px 0 22px rgba(0,162,255,0.7);
+      padding: 90px 20px 20px 20px;
+      transition: 0.28s;
+      z-index: 2500;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      border-left: 2px solid rgba(0,162,255,0.4);
+    }
+
+    .mobile-panel.open {
+      right: 0;
+      animation: panelGlow 1.5s infinite alternate;
+    }
+
+    @keyframes panelGlow {
+      0% { box-shadow: -4px 0 15px #2563eb; }
+      100% { box-shadow: -8px 0 30px #0ea5e9; }
+    }
+
+    .mobile-panel a {
+      padding: 14px;
+      border-radius: 10px;
+      background: rgba(0,162,255,0.15);
+      border: 1px solid rgba(0,162,255,0.3);
+      color: #cce7ff;
+      font-size: 18px;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 0 8px rgba(0,162,255,0.4);
+      transition: 0.15s;
+    }
+
+    .mobile-panel a:hover {
+      transform: scale(1.07);
+      background: rgba(0,162,255,0.35);
+      color: white;
+      box-shadow: 0 0 18px #0ea5e9;
+    }
+
+    .mobile-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.3s;
+      z-index: 2400;
+    }
+
+    .mobile-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* MAIN CONTENT */
+    .container {
+      margin: 120px auto 40px auto;
+      width: 460px;
+      max-width: 90%;
+      padding: 32px 24px;
+      background: rgba(17,25,45,0.85);
+      border: 2px solid rgba(0,162,255,0.4);
+      border-radius: 16px;
+      text-align: center;
+      animation: pulseCardGlow 2s infinite alternate;
+    }
+
+    @keyframes pulseCardGlow {
+      0% { box-shadow: 0 0 15px #2563eb; }
+      100% { box-shadow: 0 0 32px #0ea5e9; }
+    }
+
+    .container h1 {
+      font-size: 28px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 22px;
+      text-shadow:
+        0 0 10px #0ea5e9,
+        0 0 18px #2563eb,
+        0 0 30px #0ea5e9;
+      animation: textPulse 1.8s infinite alternate;
+    }
+
+    @keyframes textPulse {
+      0% { opacity: 0.8; }
+      100% { opacity: 1; }
+    }
+
+    .container a {
+      display: block;
+      margin-top: 16px;
+      padding: 16px;
+      font-size: 21px;
+      border-radius: 12px;
+      background: linear-gradient(90deg,#2563eb,#0ea5e9);
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      box-shadow: 0 0 14px rgba(0,200,255,0.8);
+      transition: 0.15s;
+    }
+
+    .container a:hover {
+      transform: scale(1.06);
+      box-shadow: 0 0 26px rgba(0,255,255,1);
+    }
+
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .burger { display: block; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <div class="navbar-dark">
+    <div class="brand">
+      <div class="logo">IQ</div>
+      <div>IQ Arena</div>
+    </div>
+
+    <div class="nav-links">
+      <a href="{{ url_for('index') }}" class="active">🏠 Главная</a>
+      <a href="{{ url_for('info_iq') }}">🧠 Об IQ</a>
+    </div>
+
+    <div class="burger" onclick="toggleMobile()">☰</div>
+  </div>
+
+  <!-- MOBILE MENU -->
+  <div id="mobilePanel" class="mobile-panel">
+    <a href="{{ url_for('index') }}">🏠 Главная</a>
+    <a href="{{ url_for('info_iq') }}">🧠 Об IQ</a>
+    <a href="{{ url_for('about') }}">⭐ О нас</a>
+  </div>
+
+  <div id="mobileOverlay" class="mobile-overlay"></div>
+
+  <!-- MAIN CONTENT -->
+  <div class="container">
+    <h1>Выбери категорию теста</h1>
+    <a href="{{ url_for('select_subcategory', category='iq') }}">🧠 IQ Тест</a>
+    <a href="{{ url_for('select_subcategory', category='school') }}">📘 Школьные знания</a>
+  </div>
+
+  <script>
+    const panel = document.getElementById("mobilePanel");
+    const overlay = document.getElementById("mobileOverlay");
+
+    function toggleMobile() {
+      const isOpen = panel.classList.toggle("open");
+      overlay.classList.toggle("open", isOpen);
+    }
+
+    overlay.onclick = toggleMobile;
+  </script>
+
+</body>
+</html>

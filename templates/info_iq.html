@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>IQ Arena</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/style.css') }}">
+
+  <style>
+    body {
+      background: #090e1a;
+      color: #e6ebff;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ---- НОВАЯ ИГРОВАЯ ШАПКА ---- */
+    .navbar-dark {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 20px;
+      background: linear-gradient(180deg, rgba(17,24,39,0.95), rgba(17,24,39,0.85));
+      border-bottom: 2px solid rgba(0,162,255,0.4);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 0 12px rgba(0,162,255,0.5), 0 0 4px rgba(0,162,255,0.3) inset;
+    }
+
+    .navbar-dark .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 22px;
+      text-shadow: 0 0 8px rgba(0,162,255,0.6);
+    }
+
+    .navbar-dark .brand .logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #0ea5e9, #1e3afb);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 18px;
+      box-shadow: 0 0 15px rgba(0,162,255,0.7);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 14px;
+    }
+
+    .nav-links a {
+      padding: 10px 18px;
+      border-radius: 10px;
+      background: linear-gradient(90deg,#2563eb,#0ea5e9);
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      box-shadow: 0 0 12px rgba(0,200,255,0.8);
+      transition: 0.15s;
+      font-size: 16px;
+    }
+
+    .nav-links a:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 20px rgba(0,255,255,1);
+    }
+
+    .burger {
+      display: none;
+      font-size: 32px;
+      cursor: pointer;
+      color: #0ea5e9;
+      text-shadow: 0 0 10px rgba(0,162,255,0.8);
+    }
+
+    .mobile-panel {
+      position: fixed;
+      top: 0;
+      right: -320px;
+      width: 260px;
+      height: 100%;
+      background: #0f172a;
+      padding: 90px 20px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      border-left: 2px solid rgba(0,162,255,0.5);
+      box-shadow: -8px 0 20px rgba(0,162,255,0.5);
+      transition: 0.28s;
+      z-index: 2500;
+    }
+
+    .mobile-panel.open {
+      right: 0;
+    }
+
+    .mobile-panel a {
+      padding: 12px;
+      border-radius: 10px;
+      background: rgba(0,162,255,0.15);
+      border: 1px solid rgba(0,162,255,0.4);
+      color: #cce7ff;
+      font-size: 18px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 0 8px rgba(0,162,255,0.4);
+    }
+
+    .mobile-panel a:hover {
+      background: rgba(0,162,255,0.35);
+      color: white;
+    }
+
+    .mobile-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.3s;
+      z-index: 2400;
+    }
+
+    .mobile-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* ---- стили карточек страницы (оставляем как есть, игровыми) ---- */
+    .container {
+      width: 90%;
+      max-width: 750px;
+      margin: 120px auto 40px auto;
+      background: #1f2937;
+      padding: 30px;
+      border-radius: 16px;
+      border: 2px solid #3b82f6;
+      box-shadow: 0 0 30px rgba(59,130,246,0.4);
+      animation: fadeIn 0.5s ease;
+      text-align: center;
+    }
+
+    .card {
+      background: #374151;
+      padding: 22px;
+      border-radius: 14px;
+      border: 2px solid rgba(0,162,255,0.5);
+      margin: 18px 0;
+      text-align: left;
+      transition: 0.18s;
+      box-shadow: 0 0 8px rgba(0,162,255,0.25) inset;
+    }
+
+    .card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 20px rgba(0,255,255,0.6), 0 0 6px rgba(0,200,255,0.4) inset;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      background: #0ea5e9;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 800;
+      text-shadow: 0 0 6px rgba(255,255,255,0.4);
+      box-shadow: 0 0 10px rgba(14,165,233,0.5);
+      margin-left: 6px;
+    }
+
+    .highlight {
+      color: #0ea5e9;
+      font-weight: 800;
+      text-shadow: 0 0 6px rgba(0,200,255,0.7);
+    }
+
+    .step-list {
+      line-height: 1.8;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .burger { display: block; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ---- ШАПКА (теперь красивая и в игровом стиле) ---- -->
+  <div class="navbar-dark">
+    <div class="brand">
+      <div class="logo">IQ</div>
+      <div>IQ Arena</div>
+    </div>
+
+    <div class="nav-links">
+      <a href="{{ url_for('index') }}">🏠 Главная</a>
+      <a href="{{ url_for('info_iq') }}" class="active">🧠 Об IQ</a>
+    </div>
+
+    <div class="burger" onclick="toggleMobile()">☰</div>
+  </div>
+
+  <!-- мобильное меню -->
+  <div id="mobilePanel" class="mobile-panel">
+    <a href="{{ url_for('index') }}">🏠 Главная</a>
+    <a href="{{ url_for('info_iq') }}">🧠 Об IQ</a>
+    <a href="{{ url_for('about') }}">🎮 О нас</a>
+  </div>
+
+  <!-- overlay -->
+  <div id="mobileOverlay" class="mobile-overlay"></div>
+
+  <!-- ---- Основной контент ---- -->
+  <div class="container">
+    <h1 class="highlight">🧠 Что такое IQ?</h1>
+    <p>IQ (Intelligence Quotient) — это числовая оценка интеллектуальных способностей (логика, память, анализ, решение задач).</p>
+
+    <div class="card">
+      <h2>📊 Средние показатели IQ</h2>
+      <p>Норма для большинства людей: <span class="highlight">85 — 115</span></p>
+      <div class="step-list">
+        <div>120+ → высокий интеллект <span class="badge">Ultra Rare</span></div>
+        <div>110–119 → выше среднего ⭐</div>
+        <div class="highlight">90–109 → средний показатель ✅</div>
+        <div>80–89 → чуть ниже среднего 🧩</div>
+        <div>79 и ниже → низкий показатель <span class="badge">Не диагноз</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>⚡ Как прокачать IQ (как скиллы героя!)</h2>
+      <div class="step-list">
+        ✅ Решай головоломки — это твой ежедневный EXP <br>
+        ✅ Играй в шахматы ♟ — +логика +планирование <br>
+        ✅ Тренируй память 🧩 — запоминай и вспоминай <br>
+        ✅ Читай фэнтези 📚 — расширяет мир мышления <br>
+        ✅ Учись программировать 💻 — BIG Brain Boost <br>
+        ✅ Учи язык: помогает мозгу LEVEL UP ↑ <br>
+        ✅ Тренируй тело 💪 — пассивный интеллект-бонус <br>
+        ✅ Спи 7–9 часов 🛌 — восстанавливает «ману мозга»
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🎯 Ежедневный мини-гринд IQ</h2>
+      <p>5–20 минут в день = стабильный рост 🧠📈</p>
+      <div class="step-list">
+        1. 5 мин — mental math 🔥 <br>
+        2. 5 мин — memory grind 🧩 <br>
+        3. 5 мин — logic quest 🌐 <br>
+        4. 5 мин — games of mind 🎮
+      </div>
+    </div>
+
+    <p>Прокачивайся каждый день — и твой мозг станет <span class="highlight">S-Тier!</span></p>
+
+    <a href="{{ url_for('index') }}">⬅ Назад</a>
+  </div>
+
+  <script>
+    const panel = document.getElementById("mobilePanel");
+    const overlay = document.getElementById("mobileOverlay");
+
+    function toggleMobile() {
+      const isOpen = panel.classList.toggle("open");
+      overlay.classList.toggle("open", isOpen);
+    }
+
+    overlay.onclick = () => toggleMobile();
+  </script>
+
+</body>
+</html>
